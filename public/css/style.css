@@ -1,0 +1,72 @@
+/* Reset some default browser styles */
+body,
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply a light blue background color to the header */
+header {
+  background-color: #add8e6; /* Light Blue */
+  padding: 10px;
+  text-align: center;
+}
+
+/* Style the navigation menu links */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333; /* Grey */
+  font-weight: bold;
+}
+
+/* Apply a grey background to buttons and style them */
+button {
+  background-color: #808080; /* Grey */
+  color: #fff; /* White text */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555; /* Darker Grey on hover */
+}
+
+/* Style forms and form elements */
+form {
+  margin: 20px 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Style the main content */
+main {
+  margin: 20px;
+}
+
+/* Apply additional styles as needed for your specific project */
