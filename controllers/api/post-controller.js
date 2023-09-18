@@ -1,15 +1,14 @@
 const { Post } = require('../../models');
 
 const postController = {
-  // Controller function to create a new blog post
   createPost: async (req, res) => {
     try {
+      const { title, content } = req.body;
       const newPost = await Post.create({
-        title: req.body.title,
-        content: req.body.content,
-        user_id: req.session.user_id,
+        title,
+        content,
+        user_id: req.user.id, // Assign the logged-in user's ID to the post
       });
-
       res.status(200).json(newPost);
     } catch (err) {
       console.error(err);
@@ -17,27 +16,25 @@ const postController = {
     }
   },
 
-  // Controller function to update a blog post by ID
   updatePost: async (req, res) => {
     try {
+      const { title, content } = req.body;
+      const postId = req.params.id;
       const updatedPost = await Post.update(
         {
-          title: req.body.title,
-          content: req.body.content,
+          title,
+          content,
         },
         {
           where: {
-            id: req.params.id,
-            user_id: req.session.user_id,
+            id: postId,
+            user_id: req.user.id, // Ensure that the logged-in user owns the post
           },
         }
       );
-
       if (!updatedPost[0]) {
-        res.status(404).json({ message: 'No post found with this id' });
-        return;
+        return res.status(404).json({ message: 'No post found with this id' });
       }
-
       res.status(200).json(updatedPost);
     } catch (err) {
       console.error(err);
@@ -45,21 +42,18 @@ const postController = {
     }
   },
 
-  // Controller function to delete a blog post by ID
   deletePost: async (req, res) => {
     try {
+      const postId = req.params.id;
       const deletedPost = await Post.destroy({
         where: {
-          id: req.params.id,
-          user_id: req.session.user_id,
+          id: postId,
+          user_id: req.user.id, // Ensure that the logged-in user owns the post
         },
       });
-
       if (!deletedPost) {
-        res.status(404).json({ message: 'No post found with this id' });
-        return;
+        return res.status(404).json({ message: 'No post found with this id' });
       }
-
       res.status(200).json(deletedPost);
     } catch (err) {
       console.error(err);

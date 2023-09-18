@@ -1,15 +1,14 @@
 const { Comment } = require('../../models');
 
 const commentController = {
-  // Controller function to create a new comment on a blog post
   createComment: async (req, res) => {
     try {
+      const { text, post_id } = req.body;
       const newComment = await Comment.create({
-        text: req.body.text,
-        user_id: req.session.user_id,
-        post_id: req.body.post_id,
+        text,
+        user_id: req.user.id, // Assign the logged-in user's ID to the comment
+        post_id,
       });
-
       res.status(200).json(newComment);
     } catch (err) {
       console.error(err);
@@ -17,26 +16,24 @@ const commentController = {
     }
   },
 
-  // Controller function to update a comment by ID
   updateComment: async (req, res) => {
     try {
+      const { text } = req.body;
+      const commentId = req.params.id;
       const updatedComment = await Comment.update(
         {
-          text: req.body.text,
+          text,
         },
         {
           where: {
-            id: req.params.id,
-            user_id: req.session.user_id,
+            id: commentId,
+            user_id: req.user.id, // Ensure that the logged-in user owns the comment
           },
         }
       );
-
       if (!updatedComment[0]) {
-        res.status(404).json({ message: 'No comment found with this id' });
-        return;
+        return res.status(404).json({ message: 'No comment found with this id' });
       }
-
       res.status(200).json(updatedComment);
     } catch (err) {
       console.error(err);
@@ -44,21 +41,18 @@ const commentController = {
     }
   },
 
-  // Controller function to delete a comment by ID
   deleteComment: async (req, res) => {
     try {
+      const commentId = req.params.id;
       const deletedComment = await Comment.destroy({
         where: {
-          id: req.params.id,
-          user_id: req.session.user_id,
+          id: commentId,
+          user_id: req.user.id, // Ensure that the logged-in user owns the comment
         },
       });
-
       if (!deletedComment) {
-        res.status(404).json({ message: 'No comment found with this id' });
-        return;
+        return res.status(404).json({ message: 'No comment found with this id' });
       }
-
       res.status(200).json(deletedComment);
     } catch (err) {
       console.error(err);
