@@ -1,0 +1,7 @@
+{"development": {
+    "username": "root",
+    "password": "root",
+    "database": "blog_db",
+    "host": "localhost",
+    "dialect": "mysql"
+  }}
