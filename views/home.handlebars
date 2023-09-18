@@ -1,0 +1,17 @@
+{{#> main}}
+  <h2>Welcome to the CMS Blog</h2>
+  <section>
+    {{#if loggedIn}}
+      <h3>Recent Blog Posts</h3>
+      {{#each posts}}
+        <article>
+          <h4>{{title}}</h4>
+          <p>{{content}}</p>
+          <p>Created by {{User.username}} on {{createdAt}}</p>
+        </article>
+      {{/each}}
+    {{else}}
+      <p>Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to see blog posts.</p>
+    {{/if}}
+  </section>
+{{/main}}
