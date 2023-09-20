@@ -1,67 +1,52 @@
 const router = require('express').Router();
 const { Comment } = require('../../models');
+const withAuth = require('../../utils/auth');
 
-// Route to create a new comment on a blog post
-router.post('/', async (req, res) => {
+// GET all comments
+router.get('/', async (req, res) => {
   try {
-    const newComment = await Comment.create({
-      text: req.body.text,
-      user_id: req.session.user_id, // Assuming you store the user's ID in the session
-      post_id: req.body.post_id,
-    });
-
-    res.status(200).json(newComment);
+    const dbCommentData = await Comment.findAll({});
+    res.json(dbCommentData);
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
-// Route to update a comment by ID
-router.put('/:id', async (req, res) => {
-  try {
-    const updatedComment = await Comment.update(
-      {
-        text: req.body.text,
-      },
-      {
-        where: {
-          id: req.params.id,
-          user_id: req.session.user_id, // Ensure the user can only update their own comments
-        },
-      }
-    );
-
-    if (!updatedComment[0]) {
-      res.status(404).json({ message: 'No comment found with this id' });
-      return;
+// POST a new comment
+router.post('/', withAuth, async (req, res) => {
+  // check the session
+  if (req.session) {
+    try {
+      const dbCommentData = await Comment.create({
+        comment_text: req.body.comment_text,
+        post_id: req.body.post_id,
+        // use the id from the session
+        user_id: req.session.user_id,
+      });
+      res.json(dbCommentData);
+    } catch (err) {
+      console.log(err);
+      res.status(400).json(err);
     }
-
-    res.status(200).json(updatedComment);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json(err);
   }
 });
 
-// Route to delete a comment by ID
-router.delete('/:id', async (req, res) => {
+// DELETE a comment by id
+router.delete('/:id', withAuth, async (req, res) => {
   try {
-    const deletedComment = await Comment.destroy({
+    const dbCommentData = await Comment.destroy({
       where: {
-        id: req.params.id,
-        user_id: req.session.user_id, // Ensure the user can only delete their own comments
-      },
+        id: req.params.id
+      }
     });
-
-    if (!deletedComment) {
+    if (!dbCommentData) {
       res.status(404).json({ message: 'No comment found with this id' });
       return;
     }
-
-    res.status(200).json(deletedComment);
+    res.json(dbCommentData);
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json(err);
   }
 });
