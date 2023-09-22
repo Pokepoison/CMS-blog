@@ -11,26 +11,26 @@ router.get('/', async (req, res) => {
         'id',
         'title',
         'created_at',
-        'post_content'
+        'content'
       ],
       include: [
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          attributes: ['id', 'text', 'post_id', 'user_id', 'created_at'],
           include: {
             model: User,
-            attributes: ['username', 'twitter', 'github']
+            attributes: ['username']
           }
         },
         {
           model: User,
-          attributes: ['username', 'twitter', 'github']
+          attributes: ['username']
         }
       ]
     });
 
     const posts = dbPostData.map(post => post.get({ plain: true }));
-    res.render('homepage', {
+    res.render('home', {
       posts,
       loggedIn: req.session.loggedIn
     });
@@ -68,20 +68,20 @@ router.get('/post/:id', async (req, res) => {
         'id',
         'title',
         'created_at',
-        'post_content'
+        'content'
       ],
       include: [
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          attributes: ['id', 'text', 'post_id', 'user_id', 'created_at'],
           include: {
             model: User,
-            attributes: ['username', 'twitter', 'github']
+            attributes: ['username']
           }
         },
         {
           model: User,
-          attributes: ['username', 'twitter', 'github']
+          attributes: ['username']
         }
       ]
     });

@@ -26,11 +26,11 @@ router.get('/:id', async (req, res) => {
       include: [
         {
           model: Post,
-          attributes: ['id', 'title', 'post_content', 'created_at']
+          attributes: ['id', 'title', 'content', 'created_at']
         },
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'created_at'],
+          attributes: ['id', 'text', 'created_at'],
           include: {
             model: Post,
             attributes: ['title']
@@ -50,20 +50,15 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/users
-router.post('/', async (req, res) => {
+router.post('/signup', async (req, res) => {
   try {
     const dbUserData = await User.create({
       username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-      twitter: req.body.twitter,
-      github: req.body.github
+      password: req.body.password
     });
     req.session.save(() => {
       req.session.user_id = dbUserData.id;
       req.session.username = dbUserData.username;
-      req.session.twitter = dbUserData.twitter;
-      req.session.github = dbUserData.github;
       req.session.loggedIn = true;
       res.json(dbUserData);
     });
@@ -78,11 +73,11 @@ router.post('/login', async (req, res) => {
   try {
     const dbUserData = await User.findOne({
       where: {
-        email: req.body.email
+        username: req.body.username
       }
     });
     if (!dbUserData) {
-      res.status(400).json({ message: 'No user with that email address!' });
+      res.status(400).json({ message: 'No user name!' });
       return;
     }
     const validPassword = dbUserData.checkPassword(req.body.password);
@@ -93,8 +88,6 @@ router.post('/login', async (req, res) => {
     req.session.save(() => {
       req.session.user_id = dbUserData.id;
       req.session.username = dbUserData.username;
-      req.session.twitter = dbUserData.twitter;
-      req.session.github = dbUserData.github;
       req.session.loggedIn = true;
       res.json({ user: dbUserData, message: 'You are now logged in!' });
     });

@@ -3,8 +3,9 @@ const session = require('express-session');
 const passport = require('passport');
 const exphbs = require('express-handlebars');
 const sequelize = require('./config/connection'); // Make sure to import your Sequelize configuration
-const routes = require('./routes'); // Import your defined routes
+const routes = require('./controllers'); // Import your defined routes
 const path = require('path'); // Import the path module
+const helpers = require('./utils/helpers');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,8 +29,12 @@ app.use(passport.session());
 // Serve static files (CSS, JavaScript, images, etc.) from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+const hbs = exphbs.create({ helpers });
 // Set up Handlebars as your view engine
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+// app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+// app.set('view engine', 'handlebars');
+
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 // Include the defined routes

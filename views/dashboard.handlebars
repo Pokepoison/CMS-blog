@@ -8,11 +8,11 @@
           <h4>{{title}}</h4>
           <p>{{content}}</p>
           <p>Created on {{createdAt}}</p>
-          <a href="/edit/{{id}}">Edit</a> | <a href="/delete/{{id}}">Delete</a>
+          <a href="/dashboard/edit/{{id}}">Edit</a> | <a href="/delete/{{id}}">Delete</a>
         </article>
       {{/each}}
     {{else}}
-      <p>You haven't created any blog posts yet. <a href="/create">Create one now</a>.</p>
+      <p>You haven't created any blog posts yet. <a href="/dashboard/create">Create one now</a>.</p>
     {{/if}}
   </section>
 {{/main}}
