@@ -2,6 +2,9 @@
 
 CMS-blog-app is a web application that allows developers to publish articles, blog posts, and their thoughts and opinions.
 
+Link to deployed site: https://cms-blog-app-210599de7dff.herokuapp.com/ 
+![Screenshot (38)](https://github.com/Pokepoison/first-day-demo/assets/134848930/3f18b4d5-5b80-4f30-be13-3b5d00ea94b4)
+
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
