@@ -22,7 +22,7 @@
                 <li><a href="/signup">Sign Up</a></li>
                 <!-- Add a conditional to display "Logout" when the user is logged in -->
                 {{#if loggedIn}}
-                  <li><a href="/logout">Logout</a></li>
+                  <li><a id ="logout" href="#">Logout</a></li>
                 {{/if}}
             </ul>
         </nav>
@@ -33,5 +33,9 @@
     <footer>
         <!-- Footer content goes here -->
     </footer>
+
+    <script src="/js/logout.js"></script>
 </body>
 </html>
+
+
